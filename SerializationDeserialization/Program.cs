@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using SerializationDeserialization.Serialization;
+﻿using SerializationDeserialization.Serialization;
 
 namespace SerializationDeserialization;
 
@@ -9,38 +8,14 @@ public static class Program
     {
         ListNode listNode = new()
         {
-            data = "current",
+            data = "current node",
             next = new ListNode
             {
-                data = "next"
+                data = "next node"
             }
         };
 
-        Serializer.Serialize(listNode);
+        string serializedData = Serializer.Serialize(listNode);
+        ListNode deserializeData = Serializer.Deserialize<ListNode>(serializedData);
     }
-
-    public static void TestSerialize()
-    {
-        Test next = new Test()
-        {
-            Name = "Next",
-            Age = 10
-        };
-        
-        Test current = new Test()
-        {
-            Name = "Current",
-            Age = 5,
-            Next = next
-        };
-        
-        var serialize = JsonSerializer.Serialize(current);
-    }
-}
-
-public class Test
-{
-    public string Name { get; set; }
-    public int Age { get; set; }
-    public Test Next { get; set; }
 }
