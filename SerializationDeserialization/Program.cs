@@ -1,12 +1,16 @@
-﻿using SerializationDeserialization.Serialization;
+﻿using SerializationDeserialization.LinkedList;
+using SerializationDeserialization.Serialization;
 
 namespace SerializationDeserialization;
 
 public static class Program
 {
+    private const string Path = "serializedData.txt";
+
     public static void Main(string[] args)
     {
-        SerializeNode();
+        // SerializeNode();
+        
         SerializeList();
     }
 
@@ -28,6 +32,12 @@ public static class Program
     private static void SerializeList()
     {
         ListRand list = ConfigureList();
+
+        using (FileStream fileStream = File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write))
+            list.Serialize(fileStream);
+        
+        using (FileStream fileStream = File.Open(Path, FileMode.Open, FileAccess.Read)) 
+            list.Deserialize(fileStream);
     }
 
     private static ListRand ConfigureList()

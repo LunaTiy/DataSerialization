@@ -1,4 +1,4 @@
-﻿namespace SerializationDeserialization;
+﻿namespace SerializationDeserialization.LinkedList;
 
 public class ListNode
 {
