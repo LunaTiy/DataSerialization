@@ -9,8 +9,10 @@ public static class Program
 
     public static void Main(string[] args)
     {
+        // Using json serializer (my imp)
         // SerializeNode();
         
+        // Using linked list serializer (not json)
         SerializeList();
     }
 
@@ -35,9 +37,11 @@ public static class Program
 
         using (FileStream fileStream = File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write))
             list.Serialize(fileStream);
+
+        ListRand deserializedList = new();
         
         using (FileStream fileStream = File.Open(Path, FileMode.Open, FileAccess.Read)) 
-            list.Deserialize(fileStream);
+            deserializedList.Deserialize(fileStream);
     }
 
     private static ListRand ConfigureList()
