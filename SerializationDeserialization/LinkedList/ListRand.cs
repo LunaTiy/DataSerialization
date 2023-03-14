@@ -33,6 +33,39 @@ public class ListRand : ISerializable
         SetLinkedListDependencies(nodes);
     }
 
+    private Dictionary<ListNode, int> GetNodeIdMap()
+    {
+        Dictionary<ListNode, int> dictionary = new();
+
+        int id = 0;
+
+        for (ListNode currentNode = head; currentNode != null; currentNode = currentNode.next)
+        {
+            dictionary.Add(currentNode, id);
+            id++;
+        }
+
+        return dictionary;
+    }
+
+    private void WriteDataToFile(Stream fileStream, IReadOnlyDictionary<ListNode, int> map)
+    {
+        fileStream.Write($"{count}\n".ToBytes());
+
+        for (ListNode currentNode = head; currentNode != null; currentNode = currentNode.next)
+        {
+            fileStream.Write(currentNode.data.ToBytes());
+
+            if (currentNode.rand != null)
+            {
+                int randomId = map[currentNode.rand];
+                fileStream.Write($" <{randomId}>".ToBytes());
+            }
+
+            fileStream.Write("\n".ToBytes());
+        }
+    }
+
     private static List<(ListNode node, int randomIndex)> InitializeNodes(IReadOnlyList<string> rows)
     {
         List<(ListNode node, int randomIndex)> nodes = new();
@@ -105,39 +138,6 @@ public class ListRand : ISerializable
         }
 
         tail = nodes[^1].node;
-    }
-
-    private void WriteDataToFile(Stream fileStream, IReadOnlyDictionary<ListNode, int> map)
-    {
-        fileStream.Write($"{count}\n".ToBytes());
-
-        for (ListNode currentNode = head; currentNode != null; currentNode = currentNode.next)
-        {
-            fileStream.Write(currentNode.data.ToBytes());
-
-            if (currentNode.rand != null)
-            {
-                int randomId = map[currentNode.rand];
-                fileStream.Write($" <{randomId}>".ToBytes());
-            }
-
-            fileStream.Write("\n".ToBytes());
-        }
-    }
-
-    private Dictionary<ListNode, int> GetNodeIdMap()
-    {
-        Dictionary<ListNode, int> dictionary = new();
-
-        int id = 0;
-
-        for (ListNode currentNode = head; currentNode != null; currentNode = currentNode.next)
-        {
-            dictionary.Add(currentNode, id);
-            id++;
-        }
-
-        return dictionary;
     }
 
     private static string ReadData(Stream fileStream)
